@@ -12,7 +12,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="w-full min-h-full bg-white pb-48 ">
+    <div className="w-full min-h-full bg-white  ">
       <div className="container mx-auto px-4 py-6">
         <header className="flex justify-between items-center mb-16">
           <div className="text-xl font-bold">Resume Builder</div>
@@ -56,11 +56,12 @@ const LandingPage = () => {
             <div className="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition">
               <h3 className="text-lg font-semibold mb-3">Easy Editing</h3>
               <p className="text-gray-600">
-              Update your resume sections with live preview and instant formatting.
+                Update your resume sections with live preview and instant
+                formatting.
               </p>
             </div>
 
-             <div className="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition ">
+            <div className="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition ">
               <h3 className="text-lg font-semibold mb-3">
                 AI-Powered Suggestions
               </h3>
@@ -73,12 +74,14 @@ const LandingPage = () => {
             <div className="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition ">
               <h3 className="text-lg font-semibold mb-3">One-Click Export</h3>
               <p className="text-gray-600">
-                
                 Download your resume instantly as a quality pdf with one click.
               </p>
             </div>
           </div>
         </section>
+      </div>
+      <div className="text-sm bg-gray-50 text-secondary text-center p-5 mt-5">
+        Made with ❤️... Happy Coding
       </div>
     </div>
   );
