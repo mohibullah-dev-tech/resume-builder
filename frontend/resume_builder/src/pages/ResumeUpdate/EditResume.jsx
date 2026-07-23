@@ -1,7 +1,7 @@
 import React from "react";
 
 const EditResume = () => {
-  return <div></div>;
+  return <div>EditResume</div>;
 };
 
 export default EditResume;
