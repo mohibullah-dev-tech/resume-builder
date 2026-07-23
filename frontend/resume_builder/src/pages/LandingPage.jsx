@@ -8,14 +8,38 @@ const LandingPage = () => {
     <div>
       <div className="container mx-auto px-4 py-6">
         <header className="flex justify-between items-center mb-16">
-          <div className="text-xl-font-bold">Resume Builder</div>
+          <div className="text-xl font-bold">Resume Builder</div>
           <button
-            className="bg-purple-100 text-5m font-semibold px-7 py-2.5 rounded-lg hover:text-white transition-colors cursor-pointer"
+            className="bg-purple-100 text-sm font-semibold px-7 py-2.5 rounded-lg hover:text-white transition-colors cursor-pointer"
             onClick={() => navigate("/login")}
           >
             Login/sign Up
           </button>
         </header>
+        {/* hero content */}
+        <div className="flex flex-col md:flex-row items-center ">
+          <div className="w-full md:w-1/2 pr-4 mb-8 md:mb-0">
+            <h1 className="text-5xl font-bold mb-6 leading-tight">
+              Build Your{" "}
+              <span className="text-transparent bg-clip-text bg-[radial-gradient(circle,_#7182ff _0%,_#3cff52_100%)] bg-size-[200%_200%] animate-text-shine">
+                Resume Effortlessly
+              </span>
+            </h1>
+            <p className="text-lg mb-8 text-gray-700 ">
+              Craft ATS-friendly resumes with beautiful templates, AI-powered
+              suggestions, and one-click PDF export. Land your dream job faster.
+            </p>
+            <button
+              className="bg-black text-sm font-semibold text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+              onClick={() => navigate("/signup")}
+            >
+              Get Started
+            </button>
+          </div>
+          <div className="w-full md:w-1/2 ">
+            <img src={HERO_IMG} alt="hero" className="w-full rounded-lg" />
+          </div>
+        </div>
       </div>
     </div>
   );
