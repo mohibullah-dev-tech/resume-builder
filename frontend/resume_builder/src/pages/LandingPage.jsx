@@ -48,7 +48,37 @@ const LandingPage = () => {
           </div>
         </div>
 
-        
+        <section className="mt-5">
+          <h2 className="text-3xl font-bold mb-12 text-center">
+            Features That Make You Shine.
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition">
+              <h3 className="text-lg font-semibold mb-3">Easy Editing</h3>
+              <p className="text-gray-600">
+              Update your resume sections with live preview and instant formatting.
+              </p>
+            </div>
+
+             <div className="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition ">
+              <h3 className="text-lg font-semibold mb-3">
+                AI-Powered Suggestions
+              </h3>
+              <p className="text-gray-600">
+                Choose from modern, professional template that are easy to
+                customize.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition ">
+              <h3 className="text-lg font-semibold mb-3">One-Click Export</h3>
+              <p className="text-gray-600">
+                
+                Download your resume instantly as a quality pdf with one click.
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
