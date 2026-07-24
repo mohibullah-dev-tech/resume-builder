@@ -1,10 +1,13 @@
 import React from "react";
 import HERO_IMG from "../assets/hero.png";
 import { useNavigate } from "react-router-dom";
+import Login from "./Auth/Login";
+import SignUp from "./Auth/SignUp";
+import Modal from "../components/Modal";
 const LandingPage = () => {
   const navigate = useNavigate();
 
-  const [openAuthModal, setOpenAuthModal] = React.useState(false);
+  const [openAuthModal, setOpenAuthModal] = React.useState(true);
   const [currentAuthTab, setCurrentAuthTab] = React.useState("login");
   const handleCTA = () => {
     setOpenAuthModal(true);
@@ -83,6 +86,19 @@ const LandingPage = () => {
       <div className="text-sm bg-gray-50 text-secondary text-center p-5 mt-5">
         Made with ❤️... Happy Coding
       </div>
+      <Modal
+        isOpen={openAuthModal}
+        onClose={() => {
+          setOpenAuthModal(false);
+          setCurrentAuthTab("login");
+        }}
+        hideHeader
+      >
+        <div>
+          {currentAuthTab === "login" && <Login />}
+          {currentAuthTab === "signup" && <SignUp />}
+        </div>
+      </Modal>
     </div>
   );
 };
