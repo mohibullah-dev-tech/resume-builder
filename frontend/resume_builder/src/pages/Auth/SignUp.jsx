@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import {
+  getPasswordValidationError,
+  passwordRequirements,
+} from "../../utils/passwordValidation";
+import ProfilePhotoSelector from "../../components/inputs/ProfilePhotoSelector";
 
 const SignUp = ({ setCurrentPage }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -14,8 +22,19 @@ const SignUp = ({ setCurrentPage }) => {
     event.preventDefault();
     setError("");
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !confirmPassword) {
       setError("Please complete all fields.");
+      return;
+    }
+
+    const passwordError = getPasswordValidationError(password);
+    if (passwordError) {
+      setError(passwordError);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
       return;
     }
 
@@ -30,6 +49,14 @@ const SignUp = ({ setCurrentPage }) => {
       </p>
 
       <form onSubmit={handleSignUp} className="mt-6 space-y-4">
+        <ProfilePhotoSelector
+          value={profilePhoto?.preview}
+          onChange={(file, preview) =>
+            setProfilePhoto(file ? { file, preview } : null)
+          }
+          className="mb-6"
+        />
+
         {error && (
           <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">
             {error}
@@ -66,6 +93,8 @@ const SignUp = ({ setCurrentPage }) => {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               placeholder="Create a password"
+              minLength={8}
+              autoComplete="new-password"
               className="form-input pr-10"
             />
             <button
@@ -75,6 +104,42 @@ const SignUp = ({ setCurrentPage }) => {
               onClick={() => setShowPassword((visible) => !visible)}
             >
               {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+            </button>
+          </span>
+        </label>
+
+        <ul className="space-y-1 rounded-md bg-gray-50 px-3 py-2 text-xs text-gray-600">
+          {passwordRequirements.map((requirement) => (
+            <li key={requirement.key}>{requirement.label}</li>
+          ))}
+        </ul>
+
+        <label className="block text-sm font-medium text-gray-700">
+          Confirm password
+          <span className="relative block">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(event) => setConfirmPassword(event.target.value)}
+              placeholder="Repeat your password"
+              autoComplete="new-password"
+              className="form-input pr-10"
+            />
+            <button
+              type="button"
+              aria-label={
+                showConfirmPassword
+                  ? "Hide confirm password"
+                  : "Show confirm password"
+              }
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-purple-600"
+              onClick={() => setShowConfirmPassword((visible) => !visible)}
+            >
+              {showConfirmPassword ? (
+                <FiEyeOff size={18} />
+              ) : (
+                <FiEye size={18} />
+              )}
             </button>
           </span>
         </label>

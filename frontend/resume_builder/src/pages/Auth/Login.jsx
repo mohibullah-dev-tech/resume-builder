@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { getPasswordValidationError } from "../../utils/passwordValidation";
 
 const Login = ({ setCurrentPage }) => {
   const [email, setEmail] = useState("");
@@ -16,6 +17,12 @@ const Login = ({ setCurrentPage }) => {
 
     if (!email || !password) {
       setError("Please enter your email and password.");
+      return;
+    }
+
+    const passwordError = getPasswordValidationError(password);
+    if (passwordError) {
+      setError(passwordError);
       return;
     }
 
@@ -55,6 +62,8 @@ const Login = ({ setCurrentPage }) => {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               placeholder="Enter your password"
+              minLength={8}
+              autoComplete="current-password"
               className="form-input pr-10"
             />
             <button
