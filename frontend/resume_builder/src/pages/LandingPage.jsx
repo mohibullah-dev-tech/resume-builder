@@ -1,12 +1,9 @@
 import React from "react";
 import HERO_IMG from "../assets/hero.png";
-import { useNavigate } from "react-router-dom";
 import Login from "./Auth/Login";
 import SignUp from "./Auth/SignUp";
 import Modal from "../components/Modal";
 const LandingPage = () => {
-  const navigate = useNavigate();
-
   const [openAuthModal, setOpenAuthModal] = React.useState(true);
   const [currentAuthTab, setCurrentAuthTab] = React.useState("login");
   const handleCTA = () => {
@@ -95,8 +92,12 @@ const LandingPage = () => {
         hideHeader
       >
         <div>
-          {currentAuthTab === "login" && <Login />}
-          {currentAuthTab === "signup" && <SignUp />}
+          {currentAuthTab === "login" && (
+            <Login setCurrentPage={setCurrentAuthTab} />
+          )}
+          {currentAuthTab === "signup" && (
+            <SignUp setCurrentPage={setCurrentAuthTab} />
+          )}
         </div>
       </Modal>
     </div>
