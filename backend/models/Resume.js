@@ -15,7 +15,7 @@ const ResumeSchema = new mongoose.Schema(
             required:true,
         },
         template:{
-            theme:string,
+            theme:String,
             colorPalette:string,
         },
         profileInfo:{
