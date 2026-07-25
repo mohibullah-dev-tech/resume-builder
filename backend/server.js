@@ -29,6 +29,17 @@ app.use(express.json());
 app.use("/api/auth",authRoutes);
 // app.use("/api/resume",resumeRoutes);
 
+//serve uploads folder
+app.use(
+    "/uploads",
+    express.static(path.join(__dirname, "uploads"),{
+        setHeaders:(res,path)=>{
+            res.set("Access-Control-Allow-Origin","http://localhost:5173");
+    },
+})
+);
+
+
 //static files
 app.use(express.static(path.join(__dirname,"public")));
 
