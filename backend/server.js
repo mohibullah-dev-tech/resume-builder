@@ -7,6 +7,7 @@ const path= require("path");
 const connectDB = require("./config/db");
 
 
+const authRoutes = require("./routes/authRoutes");
 const app = express();
 
 // middle ware to handle cors
@@ -23,6 +24,13 @@ app.use(
 connectDB();
 // MiddleWare
 app.use(express.json());
+
+// Routes
+app.use("/api/auth",authRoutes);
+// app.use("/api/resume",resumeRoutes);
+
+//static files
+app.use(express.static(path.join(__dirname,"public")));
 
 // Start Server
 
