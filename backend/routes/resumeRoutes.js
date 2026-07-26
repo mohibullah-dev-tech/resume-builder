@@ -1,22 +1,20 @@
-const jwt = require("jsonwebtoken");
-const User= require("../models/User");
+const express = require("express");
+const{
+    createResume,
+    getUserResumes,
+    getResumeById,
+    updateResume,
+    deleteResume,
+} = require("../controllers/resumeController");
+const {protect} = require("../middlewares/authMiddleware");
+// const {uploadResumeImage} = require("../controllers/uploadImage");
+const router = express.Router();
 
-//middleware to protect routes
-const protect = async (req,res,next)=>{
-    try{
-        const token = req.headers.authorization;
-        if(token && token.startsWith("Bearer ")){
-            const decoded=jwt.verify(token,process.env.JWT_SECRET);
-            req.user=await User.findById(decoded.id).select("-password");
+router.post("/",protect,createResume);//create resume
+router.get("/",protect,getUserResumes);//get resumes
+router.get("/:id",protect,getResumeById);//get resume by id
+router.put("/:id",protect,updateResume);//update resume
+// router.put("/:id/upload-image",protect,uploadResumeImage);//upload resume image
+router.delete("/:id",protect,deleteResume);//delete resume
+module.exports = router;    
 
-            next();
-        }else{
-            res.status(401).json({message=" Not authorized,no token"});
-        }
-    }catch(error){
-        res.status(401).json({message="Token failed",error:error.message});
-    }
-
-    };
-
-    module.exports = {protect};
