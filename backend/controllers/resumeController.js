@@ -96,7 +96,19 @@ const getResumeById = async (req, res) => {};
 //@desc get resumes by userId
 //@route GET /resume
 //@access Private
-const getUserResumes = async (req, res) => {};
+const getUserResumes = async (req, res) => {
+
+    try{
+        const resumes = await Resume.find({userId:req.user._id}).sort({updatedAt:-1});
+        res.json(resumes);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to create resume",
+      error: error.message,
+    });
+  
+    }
+  };
 
 //@desc update resume
 //@route PUT /resume
