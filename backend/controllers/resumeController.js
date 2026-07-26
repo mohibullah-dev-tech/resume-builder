@@ -91,7 +91,20 @@ const newResume = await Resume.create({
 //@desc get  single resumes by ID
 //@route GET /resume
 //@access Private
-const getResumeById = async (req, res) => {};
+const getResumeById = async (req, res) => {
+    try{
+        const resume = await Resume.findById({_id:req.params.id,userId:req.user._id});
+        if(!resume){
+            return res.status(404).json({message:"Resume not found"});
+        }
+        res.json(resume);
+    }catch(error){
+        res.status(500).json({
+            message: "Failed to get resume",
+            error: error.message,
+        });
+  }
+};
 
 //@desc get resumes by userId
 //@route GET /resume
