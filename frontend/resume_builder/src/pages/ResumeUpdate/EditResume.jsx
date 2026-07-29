@@ -21,6 +21,7 @@ import CertificationsSection from "../../components/ResumeSections/Certification
 import LanguagesSection from "../../components/ResumeSections/LanguagesSection";
 import ProjectsSection from "../../components/ResumeSections/ProjectsSection";
 import TemplateTwoColumn from "../../components/ResumeTemplets/TemplateTwoColumn";
+import ThemeModal from "../../components/ThemeModal";
 
 const SECTIONS = [
   {
@@ -77,6 +78,8 @@ const EditResume = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [showTheme, setShowTheme] = useState(false);
+  const [theme, setTheme] = useState("sunset");
 
   useEffect(() => {
     const fetchResume = async () => {
@@ -187,6 +190,12 @@ const EditResume = () => {
         </div>
         <div className="flex items-center gap-3">
           <button
+            onClick={() => setShowTheme(true)}
+            className="btn-small-light cursor-pointer"
+          >
+            <FiEye size={14} /> Change Theme
+          </button>
+          <button
             onClick={() => window.print()}
             className="btn-small-light cursor-pointer"
           >
@@ -282,6 +291,14 @@ const EditResume = () => {
           <TemplateTwoColumn resume={resume} />
         </div>
       </div>
+
+      {/* Theme Modal */}
+      <ThemeModal
+        isOpen={showTheme}
+        onClose={() => setShowTheme(false)}
+        currentTheme={theme}
+        onSelect={(t) => setTheme(t)}
+      />
     </div>
   );
 };
