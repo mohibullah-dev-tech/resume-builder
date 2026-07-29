@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import HERO_IMG from "../assets/hero.png";
 import Login from "./Auth/Login";
 import SignUp from "./Auth/SignUp";
 import Modal from "../components/Modal";
+import { UserContext } from "../context/userContext";
+import ProfileInfoCard from "../components/Cards/ProfileInfoCard";
 const LandingPage = () => {
+  const { user } = useContext(UserContext);
   const [openAuthModal, setOpenAuthModal] = React.useState(true);
   const [currentAuthTab, setCurrentAuthTab] = React.useState("login");
   const handleCTA = () => {
@@ -16,12 +19,16 @@ const LandingPage = () => {
       <div className="container mx-auto px-4 py-6">
         <header className="flex justify-between items-center mb-16">
           <div className="text-xl font-bold">Resume Builder</div>
-          <button
-            className="bg-purple-100 text-sm font-semibold px-7 py-2.5 rounded-lg hover:text-white transition-colors cursor-pointer"
-            onClick={() => setOpenAuthModal(true)}
-          >
-            Login/Sign Up
-          </button>
+          {user ? (
+            <ProfileInfoCard />
+          ) : (
+            <button
+              className="bg-purple-100 text-sm font-semibold px-7 py-2.5 rounded-lg hover:text-white transition-colors cursor-pointer"
+              onClick={() => setOpenAuthModal(true)}
+            >
+              Login/Sign Up
+            </button>
+          )}
         </header>
         {/* hero content */}
         <div className="flex flex-col md:flex-row items-center ">

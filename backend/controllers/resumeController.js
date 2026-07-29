@@ -161,7 +161,11 @@ const deleteResume = async (req, res) => {
 
         if(resume.thumbnailLink){
             const oldThumbnail = path.join(uploadsFolder,path.basename(resume.thumbnailLink));
-            if(fs.existsSync(oldThumbnail)) fs.unlinkSync(oldProfile);
+            if(fs.existsSync(oldThumbnail)) fs.unlinkSync(oldThumbnail);
+        }
+        if(resume.profileInfo?.profilePreviewUrl){
+            const oldProfile = path.join(uploadsFolder,path.basename(resume.profileInfo.profilePreviewUrl));
+            if(fs.existsSync(oldProfile)) fs.unlinkSync(oldProfile);
         }
         const deleted =await Resume.findOneAndDelete({
             _id:req.params.id,

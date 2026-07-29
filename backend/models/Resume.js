@@ -12,7 +12,7 @@ const ResumeSchema = new mongoose.Schema(
         },
         thumbnailLink:{
             type:String,
-            required:true,
+            default:"",
         },
         template:{
             theme:String,
@@ -53,6 +53,14 @@ const ResumeSchema = new mongoose.Schema(
             {
                 name:String,
                 progress:String,
+                github:String,
+                liveDemo:String,
+            },
+        ],
+        projects:[
+            {
+                title:String,
+                description:String,
                 github:String,
                 liveDemo:String,
             },

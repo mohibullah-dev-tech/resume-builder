@@ -1,8 +1,8 @@
 export const passwordRequirements = [
   {
     key: "length",
-    label: "At least 8 characters",
-    test: (password) => password.length >= 8,
+    label: "At least 6 characters",
+    test: (password) => password.length >= 6,
   },
   {
     key: "uppercase",
@@ -16,22 +16,14 @@ export const passwordRequirements = [
   },
   {
     key: "number",
-    label: "One number",
-    test: (password) => /\d/.test(password),
-  },
-  {
-    key: "special",
-    label: "One special character",
-    test: (password) => /[^A-Za-z0-9]/.test(password),
+    label: "One letter or number",
+    test: (password) => /[A-Za-z0-9]/.test(password),
   },
 ];
 
 export const getPasswordValidationError = (password) => {
-  const missingRequirement = passwordRequirements.find(
-    (requirement) => !requirement.test(password),
-  );
-
-  return missingRequirement
-    ? `Password must contain ${missingRequirement.label.toLowerCase()}.`
-    : "";
+  if (!password || password.length < 6) {
+    return "Password must be at least 6 characters.";
+  }
+  return "";
 };

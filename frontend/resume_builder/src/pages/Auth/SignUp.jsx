@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import {
@@ -6,6 +6,9 @@ import {
   passwordRequirements,
 } from "../../utils/passwordValidation";
 import ProfilePhotoSelector from "../../components/inputs/ProfilePhotoSelector";
+import { UserContext } from "../../context/userContext";
+import axiosInstance from "../../utils/axiosinstance";
+import { API_PATHS } from "../../utils/apiPaths";
 
 const SignUp = ({ setCurrentPage }) => {
   const [name, setName] = useState("");
@@ -16,9 +19,12 @@ const SignUp = ({ setCurrentPage }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleSignUp = (event) => {
+  const handleSignUp = async (event) => {
     event.preventDefault();
     setError("");
 
@@ -38,7 +44,47 @@ const SignUp = ({ setCurrentPage }) => {
       return;
     }
 
-    navigate("/dashboard");
+    setLoading(true);
+
+    try {
+      // Upload profile photo first if selected
+      let profileImageUrl = "";
+      if (profilePhoto?.file) {
+        const formData = new FormData();
+        formData.append("image", profilePhoto.file);
+        const uploadRes = await axiosInstance.post(
+          API_PATHS.IMAGE.UPLOAD_IMAGE,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          },
+        );
+        profileImageUrl = uploadRes.data.imageUrl;
+      }
+
+      // Register user
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+        name,
+        email,
+        password,
+        profileImageUrl,
+      });
+
+      const { token } = response.data;
+      if (token) {
+        localStorage.setItem("token", token);
+        updateUser(response.data);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -144,8 +190,8 @@ const SignUp = ({ setCurrentPage }) => {
           </span>
         </label>
 
-        <button type="submit" className="btn-primary">
-          Create account
+        <button type="submit" className="btn-primary" disabled={loading}>
+          {loading ? "Creating account..." : "Create account"}
         </button>
       </form>
 

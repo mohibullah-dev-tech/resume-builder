@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { getPasswordValidationError } from "../../utils/passwordValidation";
+import { UserContext } from "../../context/userContext";
+import axiosInstance from "../../utils/axiosinstance";
+import { API_PATHS } from "../../utils/apiPaths";
 
 const Login = ({ setCurrentPage }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
+  const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     setError("");
 
@@ -20,13 +24,30 @@ const Login = ({ setCurrentPage }) => {
       return;
     }
 
-    const passwordError = getPasswordValidationError(password);
-    if (passwordError) {
-      setError(passwordError);
-      return;
-    }
+    setLoading(true);
 
-    navigate("/dashboard");
+    //login api call
+    try {
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email,
+        password,
+      });
+      const { token } = response.data;
+
+      if (token) {
+        localStorage.setItem("token", token);
+        updateUser(response.data);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -77,8 +98,8 @@ const Login = ({ setCurrentPage }) => {
           </span>
         </label>
 
-        <button type="submit" className="btn-primary">
-          Login
+        <button type="submit" className="btn-primary" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
         </button>
       </form>
 
